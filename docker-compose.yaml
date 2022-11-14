@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  db:
+    image: mysql/mysql-server:5.7.38-1.2.8-server
+    cap_add:
+      - SYS_NICE
+    restart: always
+    environment:
+      - MYSQL_DATABASE=0xpayment
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_HOST=%
+    ports:
+      - '33060:3306'
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8082:80
+volumes:
+  db:
+    driver: local
